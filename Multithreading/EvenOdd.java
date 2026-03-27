@@ -1,62 +1,56 @@
 public class EvenOdd {
+
     public static final Object lock=new Object();
     public static int count=1;
     public static void main(String[] args) {
-        Thread even=new Thread(new Even());
-        Thread odd=new Thread(new Odd());
-        even.start();
-        odd.start();
-        try {
-            even.join();
-            odd.join();
-        } catch (InterruptedException e) {
+        Thread t1=new Thread(new Even());
+        Thread t2=new Thread(new Odd());
+        t1.start();
+        t2.start();
+        try{
+            t1.join();
+            t2.join();
+        }catch(Exception e){
             e.printStackTrace();
         }
-    }
+}
+
 }
 
 class Even implements Runnable{
-
-    @Override
-    public void run() {
-        while (EvenOdd.count<=10) {
-            synchronized (EvenOdd.lock) {
+    public void run(){
+        while(EvenOdd.count<=10){
+            synchronized(EvenOdd.lock){
                 if(EvenOdd.count%2==0){
-                    System.out.println("Even : "+EvenOdd.count);
+                    System.out.println("Even:"+EvenOdd.count);
                     EvenOdd.count++;
-                    EvenOdd.lock.notify();
+                    EvenOdd.lock.notifyAll();
                 }else{
-                    try{
-                        EvenOdd.lock.wait();
-                    }catch(InterruptedException e){
+                    try{EvenOdd.lock.wait();
+                    }catch(Exception e){
                         e.printStackTrace();
                     }
                 }
             }
         }
     }
-    
 }
 
 class Odd implements Runnable{
-
-    @Override
-    public void run() {
-        while (EvenOdd.count<=10) {
-            synchronized (EvenOdd.lock) {
+    public void run(){
+        while(EvenOdd.count<=10){
+            synchronized(EvenOdd.lock){
                 if(EvenOdd.count%2!=0){
-                    System.out.println("ODD : "+EvenOdd.count);
+                    System.out.println("Odd:"+EvenOdd.count);
                     EvenOdd.count++;
-                    EvenOdd.lock.notify();
+                    EvenOdd.lock.notifyAll();
                 }else{
-                    try{
-                        EvenOdd.lock.wait();
-                    }catch(InterruptedException e){
+                    try{EvenOdd.lock.wait();
+                    }catch(Exception e){
                         e.printStackTrace();
                     }
                 }
             }
         }
     }
-    
 }

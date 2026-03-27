@@ -1,50 +1,44 @@
-public class SynchronizedMethodVsBlock {
-    public static void main(String[] args) {
-        synchronizedDemo obj=new synchronizedDemo();
-        Thread t1=new Thread(()->{
-            for(int i=0;i<=5;i++){
-                obj.syncMetod();
-                try{
-                    Thread.sleep(1000);
-                }catch(InterruptedException e){
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        Thread t2=new Thread(()->{
-            for(int i=0;i<=5;i++){
-                obj.nonSyncMethod();
-                try{
-                    Thread.sleep(1000);
-                }catch(InterruptedException e){
-                    e.printStackTrace();
-                }
-            }
-        });
-
+public class SynchronizedMethodVsBlock{
+    
+    public static int num=1;
+    public static void main(String[] args){
+        SynchronizedMethodVsBlock eo=new SynchronizedMethodVsBlock();
+        Thread t1=new Thread(()->eo.Even());
+        Thread t2=new Thread(()->eo.Odd());
         t1.start();
         t2.start();
-        try{
-            t1.join();
-            t2.join();
-        }catch(InterruptedException e){
-            e.printStackTrace();
+    }
+    public void Even(){
+        while(num<=10){
+            synchronized(this){
+                if(num%2==0){
+                    System.out.println("Even : "+num);
+                    num++;
+                    notifyAll();
+                }else{
+                    try{
+                        wait();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
-    
+    public synchronized void Odd(){
+        while(num<=10){
+            if(num%2!=0){
+                System.out.println("Odd :"+num);
+                num++;
+                notifyAll();
+            }else{
+                try{
+                    wait();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
 
-class synchronizedDemo{
-    int count=0;
-    public synchronized void syncMetod(){
-        count++;
-        System.out.println("Increament using method : "+count);
-    }
-    public void nonSyncMethod(){
-        synchronized(this){
-            count++;
-            System.out.println("increment using block : "+count);
-        }
-    }
-}
