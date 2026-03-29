@@ -1,4 +1,5 @@
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,16 +60,18 @@ The String::length method reference is used to get the length of each string.
 
 The collect() function is used to get the result from a stream. Collectors.toList() is a collector that accumulates the input elements into a new List. */
 
-public class LengthCourseName {
-   public static void main(String[] args) {
-        List<String> lst=List.of("Math", "English", "History", "Physics");
-        System.out.println("Original List : "+lst);
-        System.out.println("Length : "+length(lst));
-   }
-   public static List<Integer> length(List<String> lst){
-        if(lst==null){
-            return List.of();
-        }
-        return lst.stream().map(n->n.length()).collect(Collectors.toList());
-   }
+public class LengthCourseName{
+
+     public static void main(String[] args) {
+          List<String> course=List.of("Math", "English", "History", "Physics");
+          System.out.println("Course Names: "+course);
+          System.out.println("Length of Course Names: "+length(course));
+     }
+     public static List<Integer> length(List<String> lst){
+          if(lst==null){
+               return List.of();
+          }
+          return lst.stream().map(n->n.length()).collect(Collectors.toList());
+     }
+
 }
