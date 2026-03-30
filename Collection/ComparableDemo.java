@@ -1,33 +1,32 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import java.util.*;
 class Student implements Comparable<Student>{
-   int marks;
-   String name;
+    int id;
+    String name;
+    
+    public Student(int id,String name){
+        this.id=id;
+        this.name=name;
+    }
+    
+    public int compareTo(Student s){
+        return this.id-s.id;
+    }
 
-   Student(int marks,String name){
-    this.marks=marks;
-    this.name=name;
-   }
-
-   public int compareTo(Student other){
-    return this.marks-other.marks;
-   }
-
-   public String toString(){
-    return name+" : "+marks;
-   }
+    public String toString(){
+        return id+" : "+name;
+    }
 }
-public class ComparableDemo {
 
-    public static void main(String[] args) {
+public class ComparableDemo{
+    public static void main(String[] args){
         List<Student> lst=new ArrayList<>();
-        lst.add(new Student(90, "Alice"));
-        lst.add(new Student(88, "Marry"));
-        lst.add(new Student(96, "Bob"));
-
+        lst.add(new Student(100,"Rajat"));
+        lst.add(new Student(101,"Rohit"));
+        lst.add(new Student(88,"Mayank"));
+        lst.add(new Student(94,"Lavanya"));
+        lst.add(new Student(45,"Pooja"));
+        
         Collections.sort(lst);
-        System.out.println("Sorted by marks : "+lst);
+        System.out.println(lst);
     }
 }
